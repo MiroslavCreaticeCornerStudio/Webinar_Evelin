@@ -52,6 +52,10 @@ const bullets = [
   .who__image-wrap {
     flex-shrink: 0;
     width: 38.1875em; /* 611px */
+    /* Pin the photo while the bullet list scrolls past, until the section ends */
+    position: sticky;
+    top: 2em;
+    align-self: flex-start;
   }
   .who__image {
     width: 100%;
@@ -109,6 +113,7 @@ const bullets = [
     .who__image-wrap {
       width: 100%;
       max-width: 38.1875em;
+      position: static; /* no sticky once the layout stacks */
     }
     .who__content {
       width: 100%;
