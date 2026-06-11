@@ -80,10 +80,11 @@ const units = [
   }
 
   @media (max-width: 767px) {
-    /* Full width on mobile with the chips spread evenly across the bar */
+    /* Full-width bar, but keep the chips grouped together (not spread apart) */
     .countdown {
       width: 100%;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 1em; /* 16px — close, even spacing like the design */
     }
   }
 
