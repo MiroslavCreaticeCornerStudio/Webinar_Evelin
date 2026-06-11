@@ -32,3 +32,65 @@ import Footer from "../components/Footer.astro";
   </main>
   <Footer />
 </BaseLayout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reduce) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Fade + slide-up reveal (these match the .has-reveal hidden state in global.css)
+    const upSelector = [
+      ".hero__heading-block",
+      ".hero__info",
+      ".hero__media",
+      ".benefit",
+      ".who__heading",
+      ".who__card",
+      ".cta__box",
+      ".learn__head",
+      ".learn-item",
+      ".speaker__left",
+      ".speaker__image-wrap",
+      ".metrics__image-wrap",
+      ".metrics__company",
+      ".cta-form__left",
+      ".cta-form__panel",
+      ".footer__content",
+    ].join(", ");
+
+    ScrollTrigger.batch(upSelector, {
+      start: "top 88%",
+      once: true,
+      onEnter: (els) =>
+        gsap.to(els, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          stagger: 0.1,
+          overwrite: true,
+        }),
+    });
+
+    // Sticky photo — fade only (no transform, so position: sticky keeps working)
+    ScrollTrigger.batch(".who__image-wrap", {
+      start: "top 88%",
+      once: true,
+      onEnter: (els) =>
+        gsap.to(els, { opacity: 1, duration: 0.8, ease: "power2.out", overwrite: true }),
+    });
+
+    // Tell the inline failsafe the reveals are wired up
+    (window as any).__revealReady = true;
+
+    // Recalculate trigger positions once fonts/images settle
+    window.addEventListener("load", () => ScrollTrigger.refresh());
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh());
+    }
+  }
+</script>

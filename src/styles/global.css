@@ -296,3 +296,36 @@ p {
 .btn:hover {
   opacity: 0.85;
 }
+
+/* ==========================================================================
+   Scroll reveal (GSAP)
+   Initial hidden state is applied ONLY when JS adds `.has-reveal` to <html>.
+   Reduced-motion users and no-JS visitors never get it, so content stays visible.
+   ========================================================================== */
+.has-reveal
+  :is(
+    .hero__heading-block,
+    .hero__info,
+    .hero__media,
+    .benefit,
+    .who__heading,
+    .who__card,
+    .cta__box,
+    .learn__head,
+    .learn-item,
+    .speaker__left,
+    .speaker__image-wrap,
+    .metrics__image-wrap,
+    .metrics__company,
+    .cta-form__left,
+    .cta-form__panel,
+    .footer__content
+  ) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Sticky element — fade only (a transform would break position: sticky) */
+.has-reveal .who__image-wrap {
+  opacity: 0;
+}
