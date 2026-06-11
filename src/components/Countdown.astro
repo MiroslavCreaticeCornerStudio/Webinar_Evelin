@@ -1,17 +1,38 @@
 ---
-const items = [
-  { num: "06", label: "дни" },
-  { num: "04", label: "часа" },
-  { num: "43", label: "минути" },
-  { num: "12", label: "секунди" },
+interface Props {
+  /**
+   * Webinar start, ISO-8601 with timezone offset.
+   * Bulgaria is UTC+3 (EEST) in June. Keep this in sync with the date/time
+   * shown in the Hero + form-CTA info rows.
+   * NOTE: 2026-06-03 is in the past — update to the real future date.
+   */
+  target?: string;
+}
+
+const { target = "2026-06-03T19:00:00+03:00" } = Astro.props;
+
+// Pre-JS placeholder values (overwritten on load by the script below).
+const units = [
+  { unit: "days", num: "06", label: "дни" },
+  { unit: "hours", num: "04", label: "часа" },
+  { unit: "minutes", num: "43", label: "минути" },
+  { unit: "seconds", num: "12", label: "секунди" },
 ];
 ---
 
-<div class="countdown">
+<div
+  class="countdown"
+  data-countdown
+  data-target={target}
+  role="timer"
+  aria-label="Оставащо време до началото на обучението"
+>
   {
-    items.map((c) => (
+    units.map((c) => (
       <div class="countdown__item">
-        <div class="countdown__num">{c.num}</div>
+        <div class="countdown__num" data-unit={c.unit}>
+          {c.num}
+        </div>
         <span class="countdown__label">{c.label}</span>
       </div>
     ))
@@ -49,6 +70,7 @@ const items = [
     color: var(--color-gold);
     text-transform: uppercase;
     text-align: center;
+    font-variant-numeric: tabular-nums;
   }
   .countdown__label {
     font-family: var(--font-heading);
@@ -69,3 +91,32 @@ const items = [
     }
   }
 </style>
+
+<script>
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  document.querySelectorAll<HTMLElement>("[data-countdown]").forEach((el) => {
+    const target = new Date(el.dataset.target ?? "").getTime();
+    if (Number.isNaN(target)) return;
+
+    const find = (u: string) => el.querySelector<HTMLElement>(`[data-unit="${u}"]`);
+    const days = find("days");
+    const hours = find("hours");
+    const minutes = find("minutes");
+    const seconds = find("seconds");
+
+    let timer: ReturnType<typeof setInterval>;
+
+    const tick = () => {
+      const total = Math.max(0, Math.floor((target - Date.now()) / 1000));
+      if (days) days.textContent = pad(Math.floor(total / 86400));
+      if (hours) hours.textContent = pad(Math.floor((total % 86400) / 3600));
+      if (minutes) minutes.textContent = pad(Math.floor((total % 3600) / 60));
+      if (seconds) seconds.textContent = pad(total % 60);
+      if (total === 0) clearInterval(timer);
+    };
+
+    tick();
+    timer = setInterval(tick, 1000);
+  });
+</script>
