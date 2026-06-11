@@ -23,6 +23,7 @@ node_modules/
 .env
 .env.local
 .env.*.local
+.dev.vars
 
 # Google Indexing API service account key — never commit this
 .google-indexing-key.json

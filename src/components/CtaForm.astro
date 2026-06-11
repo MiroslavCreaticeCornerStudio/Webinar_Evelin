@@ -74,6 +74,7 @@ const infoCol2 = [
           <span>Давам съгласието си данните ми да бъдат обработени съгласно приложения формуляр</span>
         </label>
         <button type="submit" class="btn cta-form__submit">Участвай БЕЗПЛАТНО</button>
+        <p class="cta-form__status" role="status" aria-live="polite"></p>
       </form>
     </div>
   </div>
@@ -228,6 +229,27 @@ const infoCol2 = [
     width: 100%;
     margin-top: 1em;
   }
+  .cta-form__status {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 0.9375em; /* 15px */
+    line-height: 1.4;
+    min-height: 1.4em;
+    margin-top: 0.25em;
+  }
+  .cta-form__status[data-kind="success"] {
+    color: var(--color-gold);
+  }
+  .cta-form__status[data-kind="error"] {
+    color: #ff8f8f;
+  }
+  .cta-form__status[data-kind="pending"] {
+    color: var(--color-gray-40);
+  }
+  .cta-form__submit[disabled] {
+    opacity: 0.6;
+    cursor: progress;
+  }
 
   @media (max-width: 991px) {
     .cta-form__inner {
@@ -259,3 +281,60 @@ const infoCol2 = [
     }
   }
 </style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>(".cta-form__form");
+  if (form) {
+    const status = form.querySelector<HTMLElement>(".cta-form__status");
+    const submit = form.querySelector<HTMLButtonElement>(".cta-form__submit");
+    const setStatus = (msg: string, kind: string) => {
+      if (status) {
+        status.textContent = msg;
+        status.dataset.kind = kind;
+      }
+    };
+    // Use IDs, not form.name (which collides with the input named "name").
+    const val = (id: string) =>
+      (form.querySelector<HTMLInputElement>(id)?.value ?? "").trim();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const consent = form.querySelector<HTMLInputElement>('input[name="consent"]')?.checked;
+      if (!consent) {
+        setStatus("Моля, дайте съгласие за обработка на данните.", "error");
+        return;
+      }
+      const payload = {
+        name: val("#cf-name"),
+        phone: val("#cf-phone"),
+        email: val("#cf-email"),
+        consent: true,
+      };
+      if (!payload.email) {
+        setStatus("Моля, въведете имейл адрес.", "error");
+        return;
+      }
+
+      setStatus("Изпращане…", "pending");
+      if (submit) submit.disabled = true;
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const out = await res.json().catch(() => ({}));
+        if (res.ok && out.ok) {
+          form.reset();
+          setStatus("Благодарим! Запазихме мястото ти за обучението.", "success");
+        } else {
+          setStatus(out.error || "Възникна грешка. Опитайте отново.", "error");
+        }
+      } catch {
+        setStatus("Възникна грешка с връзката. Опитайте отново.", "error");
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    });
+  }
+</script>
