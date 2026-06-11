@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: replace with the real production domain — used for canonical & Open Graph URLs.
-  site: 'https://inclusive-webinar.example',
+  // Production URL — used for canonical & Open Graph URLs.
+  // Update this if you map a custom domain in Cloudflare.
+  site: 'https://webinarevelin.miroslav-ivanov.workers.dev',
 });
