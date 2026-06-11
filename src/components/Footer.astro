@@ -1,8 +1,9 @@
 ---
+// Absolute hashes so the links also work from sub-pages (e.g. the privacy page)
 const links = [
-  { label: "За кого е подходящо", href: "#who-is-it-for" },
-  { label: "Какво ще научиш", href: "#what-you-will-learn" },
-  { label: "За лектора", href: "#speaker" },
+  { label: "За кого е подходящо", href: "/#who-is-it-for" },
+  { label: "Какво ще научиш", href: "/#what-you-will-learn" },
+  { label: "За лектора", href: "/#speaker" },
 ];
 ---
 
@@ -33,7 +34,7 @@ const links = [
   </div>
 
   <div class="footer__bar">
-    <a href="#" class="footer__privacy">Защина на личните данни</a>
+    <a href="/zashtita-na-lichnite-danni" class="footer__privacy">Защита на личните данни</a>
     <p class="footer__copy">„Инклузив България“ АД, 2026 година</p>
   </div>
 </footer>
@@ -171,6 +172,18 @@ const links = [
       flex-direction: column;
       align-items: center;
       gap: 1em;
+    }
+    /* Center the address + phone (icon above, text centered) */
+    .footer__address {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25em;
+    }
+    .footer__addr-item {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5em;
     }
     .footer__bar {
       flex-direction: column;
