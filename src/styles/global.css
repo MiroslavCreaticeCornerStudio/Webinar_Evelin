@@ -329,3 +329,10 @@ p {
 .has-reveal .who__image-wrap {
   opacity: 0;
 }
+
+/* Hero CTA is full-width on mobile (matches the mobile design) */
+@media (max-width: 767px) {
+  .hero__cta {
+    width: 100%;
+  }
+}

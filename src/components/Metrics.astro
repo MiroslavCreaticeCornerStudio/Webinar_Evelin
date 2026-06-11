@@ -133,7 +133,8 @@ const metrics = [
 
   @media (max-width: 991px) {
     .metrics__inner {
-      flex-direction: column;
+      /* reverse so the logo + metrics sit above the photo (mobile design) */
+      flex-direction: column-reverse;
       align-items: stretch;
       gap: 3em;
     }

@@ -38,7 +38,12 @@ const infoItems = [
           </div>
         </div>
 
-        <Button href="#cta">Запази своето място сега</Button>
+        <Button href="#cta" class="hero__cta">Запази своето място сега</Button>
+      </div>
+
+      <!-- Mobile-only countdown (in flow, between button and photo) -->
+      <div class="hero__countdown-mobile">
+        <Countdown />
       </div>
 
       <div class="hero__info">
@@ -233,6 +238,11 @@ const infoItems = [
     top: 34.0625em; /* 545px */
   }
 
+  /* In-flow countdown shown only on mobile (desktop uses the absolute one above) */
+  .hero__countdown-mobile {
+    display: none;
+  }
+
   /* ---- Responsive ---- */
   @media (max-width: 991px) {
     .hero__inner {
@@ -250,33 +260,62 @@ const infoItems = [
     }
   }
 
+  /* ---- Mobile: match the dedicated mobile design ----
+     Flatten the two columns and reorder to: heading → button → countdown →
+     photo → info bar (per the Figma mobile layout). */
   @media (max-width: 767px) {
-    .hero__title-1 {
-      font-size: 2.75em;
+    .hero__inner {
+      gap: 2em;
+      padding-top: 2em;
     }
-    .hero__title-2 {
-      font-size: 1.75em;
+    /* Promote .hero__left's children into the column so everything reorders */
+    .hero__left {
+      display: contents;
+    }
+    .hero__heading-block {
+      order: 1;
+      width: 100%;
+    }
+    .hero__countdown-mobile {
+      order: 2;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .hero__media {
+      order: 3;
     }
     .hero__info {
-      flex-wrap: wrap;
-      gap: 1.25em;
+      order: 4;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25em 1em;
     }
-    .hero__info-item {
-      flex-basis: 45%;
+
+    /* Eyebrow is omitted on mobile; heading is smaller */
+    .hero__eyebrow {
+      display: none;
+    }
+    .hero__title-1 {
+      font-size: 2.25em; /* 36px */
+    }
+    .hero__title-2 {
+      font-size: 1.25em; /* 20px */
+    }
+    .hero__desc {
+      font-size: 1.125em; /* 18px */
+    }
+
+    /* The desktop (absolute, over-photo) countdown is replaced by the in-flow one */
+    .hero__countdown {
+      display: none;
     }
   }
 
   @media (max-width: 479px) {
-    .hero__info-item {
-      flex-basis: 100%;
-    }
     /* Scale the fixed-size media block down so it never exceeds the viewport */
     .hero__media {
-      font-size: 0.7em;
-    }
-    .hero__countdown {
-      left: 50%;
-      transform: translateX(-50%);
+      font-size: 0.6em;
     }
   }
 </style>
