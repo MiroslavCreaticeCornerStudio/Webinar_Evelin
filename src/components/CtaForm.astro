@@ -301,11 +301,18 @@ const infoCol2 = [
         setStatus("Моля, дайте съгласие за обработка на данните.", "error");
         return;
       }
+      let tracking: Record<string, string> = {};
+      try {
+        tracking = JSON.parse(localStorage.getItem("inclusive_tracking") || "{}");
+      } catch (e) {
+        /* ignore */
+      }
       const payload = {
         name: val("#cf-name"),
         phone: val("#cf-phone"),
         email: val("#cf-email"),
         consent: true,
+        ...tracking, // fbclid + utm_* for Facebook offline conversion tracking
       };
       if (!payload.email) {
         setStatus("Моля, въведете имейл адрес.", "error");

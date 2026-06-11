@@ -66,13 +66,32 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const sms = normalizePhone(phone);
-  const baseAttributes: Record<string, string> = {};
-  if (name) baseAttributes.FIRSTNAME = name;
+  const nameAttr: Record<string, string> = name ? { FIRSTNAME: name } : {};
 
-  const createContact = (includeSms: boolean) => {
-    const attributes = { ...baseAttributes };
-    if (includeSms && sms) attributes.SMS = sms;
-    return fetch(BREVO_CONTACTS_ENDPOINT, {
+  // Facebook offline-conversion tracking → Brevo contact attributes.
+  // These attributes must exist in Brevo (Contacts → Settings → Contact
+  // Attributes) for the values to be stored; if they don't, the tiered fallback
+  // below drops them so the lead is still captured.
+  const TRACKING_MAP: Record<string, string> = {
+    fbclid: "FBCLID",
+    utm_source: "UTM_SOURCE",
+    utm_medium: "UTM_MEDIUM",
+    utm_campaign: "UTM_CAMPAIGN",
+    utm_term: "UTM_TERM",
+    utm_content: "UTM_CONTENT",
+    fb_click_time: "FB_CLICK_TIME",
+    landing_url: "LANDING_URL",
+  };
+  const trackingAttributes: Record<string, string> = {};
+  for (const [key, attr] of Object.entries(TRACKING_MAP)) {
+    const v = (body as Record<string, unknown>)[key];
+    if (v !== undefined && v !== null && String(v).trim() !== "") {
+      trackingAttributes[attr] = String(v).slice(0, 250);
+    }
+  }
+
+  const createContact = (attributes: Record<string, string>) =>
+    fetch(BREVO_CONTACTS_ENDPOINT, {
       method: "POST",
       headers: {
         "api-key": apiKey,
@@ -86,20 +105,26 @@ export const POST: APIRoute = async ({ request }) => {
         updateEnabled: true, // upsert if the contact already exists
       }),
     });
-  };
+
+  const ok = (res: Response) => res.ok || res.status === 201 || res.status === 204;
 
   try {
-    let res = await createContact(true);
-    // An invalid SMS format makes Brevo reject the whole contact — retry without
-    // the phone so we never lose the lead.
-    if (!res.ok && sms) res = await createContact(false);
-
-    if (res.ok || res.status === 201 || res.status === 204) {
-      // ── FUTURE: Zoom webinar registration goes here (see note at bottom) ──
-      return json({ ok: true });
+    // Richest payload first; fall back so a missing Brevo attribute or an invalid
+    // phone format never causes us to lose the lead.
+    const attempts = [
+      { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...trackingAttributes },
+      { ...nameAttr, ...(sms ? { SMS: sms } : {}) },
+      { ...nameAttr },
+    ];
+    let res: Response | null = null;
+    for (const attrs of attempts) {
+      res = await createContact(attrs);
+      if (ok(res)) {
+        // ── FUTURE: Zoom webinar registration goes here (see note at bottom) ──
+        return json({ ok: true });
+      }
     }
-
-    console.error("Brevo error", res.status, await res.text());
+    console.error("Brevo error", res?.status, res ? await res.text() : "no response");
     return json(
       { ok: false, error: "Възникна грешка при записването. Опитайте отново." },
       502
