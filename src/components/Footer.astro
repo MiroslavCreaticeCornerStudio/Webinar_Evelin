@@ -41,6 +41,9 @@ const links = [
 <style>
   .footer {
     background-color: rgba(57, 60, 70, 0.3);
+    /* The decorative frame is fixed-height and can overshoot the bottom slightly;
+       clip it so there's no empty scroll space below the gold bar. */
+    overflow: hidden;
   }
 
   .footer__main {
