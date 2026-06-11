@@ -1,9 +1,10 @@
 ---
 import Countdown from "./Countdown.astro";
+import { webinar } from "../data/webinar";
 
 const infoCol1 = [
-  { icon: "/assets/images/icon-calendar.svg", text: "03.06.2026" },
-  { icon: "/assets/images/icon-clock.svg", text: "19:00" },
+  { icon: "/assets/images/icon-calendar.svg", text: webinar.date },
+  { icon: "/assets/images/icon-clock.svg", text: webinar.time },
   { icon: "/assets/images/icon-lock.svg", text: "Напълно безплатно" },
 ];
 const infoCol2 = [

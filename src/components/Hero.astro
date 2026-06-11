@@ -1,10 +1,11 @@
 ---
 import Button from "./Button.astro";
 import Countdown from "./Countdown.astro";
+import { webinar } from "../data/webinar";
 
 const infoItems = [
-  { icon: "/assets/images/icon-calendar.svg", label: "Дата:", value: "03.06.2026" },
-  { icon: "/assets/images/icon-clock.svg", label: "Час:", value: "19:00" },
+  { icon: "/assets/images/icon-calendar.svg", label: "Дата:", value: webinar.date },
+  { icon: "/assets/images/icon-clock.svg", label: "Час:", value: webinar.time },
   { icon: "/assets/images/icon-mappin.svg", label: "Къде:", value: "Онлайн в Zoom" },
   { icon: "/assets/images/icon-hourglass.svg", label: "Времетраене:", value: "60 мин." },
 ];

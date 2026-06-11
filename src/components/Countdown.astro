@@ -1,15 +1,12 @@
 ---
+import { webinar } from "../data/webinar";
+
 interface Props {
-  /**
-   * Webinar start, ISO-8601 with timezone offset.
-   * Bulgaria is UTC+3 (EEST) in June. Keep this in sync with the date/time
-   * shown in the Hero + form-CTA info rows.
-   * NOTE: 2026-06-03 is in the past — update to the real future date.
-   */
+  /** Webinar start, ISO-8601 with offset. Defaults to src/data/webinar.ts. */
   target?: string;
 }
 
-const { target = "2026-06-03T19:00:00+03:00" } = Astro.props;
+const { target = webinar.startISO } = Astro.props;
 
 // Pre-JS placeholder values (overwritten on load by the script below).
 const units = [
