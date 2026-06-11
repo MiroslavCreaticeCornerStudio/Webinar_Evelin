@@ -8,5 +8,9 @@ export default defineConfig({
   site: 'https://webinarevelin.miroslav-ivanov.workers.dev',
   // Static pages by default; the form endpoint opts into on-demand rendering
   // (prerender = false) and runs on Cloudflare.
-  adapter: cloudflare({ platformProxy: { enabled: true } }),
+  adapter: cloudflare({
+    platformProxy: { enabled: true },
+    // We use plain <img> tags, so skip Cloudflare's image binding.
+    imageService: "passthrough",
+  }),
 });
