@@ -1,0 +1,161 @@
+---
+const metrics = [
+  { num: "15,000", label: "продадени имота" },
+  { num: "20+", label: "години опит зад основателите" },
+  { num: "3+", label: "години INclusive на пазара" },
+];
+---
+
+<section class="metrics">
+  <div class="container metrics__inner">
+    <div class="metrics__image-wrap">
+      <img
+        src="/assets/images/metrics-photo.png"
+        alt="Екипът на INclusive по време на вътрешно обучение"
+        width="606"
+        height="615"
+        class="metrics__image"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="metrics__company">
+      <a href="#" class="metrics__logo" aria-label="INclusive">
+        <img src="/assets/images/logo-inclusive.svg" alt="INclusive" class="metrics__logo-main" />
+        <img src="/assets/images/logo-subtitle.svg" alt="недвижими имоти" class="metrics__logo-sub" />
+      </a>
+
+      <dl class="metrics__list">
+        {
+          metrics.map((m) => (
+            <div class="metric">
+              <div class="metric__row">
+                <dt class="metric__num">{m.num}</dt>
+                <dd class="metric__label">{m.label}</dd>
+              </div>
+              <span class="divider-mark" aria-hidden="true" />
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .metrics {
+    background-color: var(--color-dark);
+    padding-block: 5.25em; /* 84px */
+  }
+  .metrics__inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 7em; /* 112px */
+  }
+  .metrics__image-wrap {
+    flex-shrink: 0;
+    width: 37.875em; /* 606px */
+  }
+  .metrics__image {
+    width: 100%;
+    height: auto;
+  }
+
+  .metrics__company {
+    display: flex;
+    flex-direction: column;
+    gap: 8em; /* 128px */
+    width: 33.125em; /* 530px */
+    padding-bottom: 3.5em; /* 56px */
+  }
+
+  /* Logo cluster */
+  .metrics__logo {
+    position: relative;
+    display: block;
+    width: 13.6875em; /* 219px */
+    height: 5.71em; /* 91.36px */
+    flex-shrink: 0;
+  }
+  .metrics__logo-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 13.6875em;
+    height: 4.068em; /* 65.086px */
+  }
+  .metrics__logo-sub {
+    position: absolute;
+    top: 4.878em; /* 78.05px */
+    left: 1.65em; /* 26.4px */
+    width: 10.3875em; /* 166.2px */
+    height: 0.832em; /* 13.311px */
+  }
+
+  .metrics__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 21.25em; /* 340px */
+  }
+  .metric {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1em; /* 16px */
+    width: 100%;
+  }
+  .metric__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1em;
+  }
+  .metric__num {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3.5em; /* 56px */
+    line-height: 1.1;
+    color: var(--color-gold);
+    text-transform: uppercase;
+  }
+  .metric__label {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 1.5em; /* 24px */
+    line-height: 1.2;
+    color: var(--color-cream);
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  @media (max-width: 991px) {
+    .metrics__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 3em;
+    }
+    .metrics__image-wrap,
+    .metrics__company {
+      width: 100%;
+    }
+    .metrics__company {
+      gap: 3em;
+    }
+  }
+  @media (max-width: 479px) {
+    .metric__row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25em;
+    }
+    .metric__label {
+      text-align: left;
+    }
+    .metric {
+      align-items: flex-start;
+    }
+  }
+</style>

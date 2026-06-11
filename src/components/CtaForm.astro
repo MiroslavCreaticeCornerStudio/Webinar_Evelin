@@ -1,0 +1,260 @@
+---
+import Countdown from "./Countdown.astro";
+
+const infoCol1 = [
+  { icon: "/assets/images/icon-calendar.svg", text: "03.06.2026" },
+  { icon: "/assets/images/icon-clock.svg", text: "19:00" },
+  { icon: "/assets/images/icon-lock.svg", text: "Напълно безплатно" },
+];
+const infoCol2 = [
+  { icon: "/assets/images/icon-mappin.svg", text: "Онлайн в Zoom" },
+  { icon: "/assets/images/icon-hourglass.svg", text: "60 мин." },
+  { icon: "/assets/images/icon-video-slash.svg", text: "Няма запис" },
+];
+---
+
+<section class="cta-form" id="cta">
+  <div class="cta-form__bg" aria-hidden="true">
+    <img src="/assets/images/cta2-bg.jpg" alt="" class="cta-form__photo" />
+    <div class="cta-form__overlay"></div>
+  </div>
+
+  <div class="container cta-form__inner">
+    <div class="cta-form__left">
+      <div class="cta-form__text">
+        <h2 class="cta-form__heading">
+          Виж как добрата подготовка се превръща в <span class="cta-form__accent">преднина</span>
+        </h2>
+        <span class="divider-mark" aria-hidden="true"></span>
+        <div class="cta-form__info">
+          <ul class="cta-form__info-col">
+            {
+              infoCol1.map((i) => (
+                <li class="cta-form__info-row">
+                  <img src={i.icon} alt="" width="22" height="22" />
+                  <span>{i.text}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <ul class="cta-form__info-col">
+            {
+              infoCol2.map((i) => (
+                <li class="cta-form__info-row">
+                  <img src={i.icon} alt="" width="22" height="22" />
+                  <span>{i.text}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <Countdown />
+    </div>
+
+    <div class="cta-form__panel">
+      <img src="/assets/images/cta2-form-panel.svg" alt="" class="cta-form__panel-bg" aria-hidden="true" />
+      <form class="cta-form__form" novalidate>
+        <div class="cta-form__field">
+          <label for="cf-name">Имена:</label>
+          <input id="cf-name" name="name" type="text" placeholder="Име Фамилия" autocomplete="name" />
+        </div>
+        <div class="cta-form__field">
+          <label for="cf-phone">Телефон:</label>
+          <input id="cf-phone" name="phone" type="tel" placeholder="Телефон" autocomplete="tel" />
+        </div>
+        <div class="cta-form__field">
+          <label for="cf-email">Имейл</label>
+          <input id="cf-email" name="email" type="email" placeholder="Имейл" autocomplete="email" />
+        </div>
+        <label class="cta-form__consent">
+          <input type="checkbox" name="consent" required />
+          <span>Давам съгласието си данните ми да бъдат обработени съгласно приложения формуляр</span>
+        </label>
+        <button type="submit" class="btn cta-form__submit">Участвай БЕЗПЛАТНО</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-form {
+    position: relative;
+    overflow: hidden;
+    padding-block: 5.25em; /* 84px */
+  }
+  .cta-form__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .cta-form__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cta-form__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(33, 35, 43, 0.9);
+  }
+
+  .cta-form__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2em;
+  }
+  .cta-form__left {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5em; /* 56px */
+  }
+  .cta-form__text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em; /* 24px */
+    width: 34.3125em; /* 549px */
+  }
+  .cta-form__heading {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3em; /* 48px */
+    line-height: 1.2;
+    color: var(--color-cream);
+    text-transform: uppercase;
+  }
+  .cta-form__accent {
+    color: var(--color-gold);
+  }
+  .cta-form__info {
+    display: flex;
+    gap: 1em; /* 16px */
+  }
+  .cta-form__info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1em; /* 16px */
+    width: 14.125em; /* 226px */
+  }
+  .cta-form__info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.576em; /* 9.22px */
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.25em; /* 20px */
+    line-height: 1.2;
+    color: var(--color-cream);
+  }
+  .cta-form__info-row img {
+    width: 1.375em; /* 22px */
+    height: 1.375em;
+    flex-shrink: 0;
+  }
+
+  /* Form panel */
+  .cta-form__panel {
+    position: relative;
+    flex-shrink: 0;
+    width: 35.625em; /* 570px */
+    min-height: 35.5em; /* 567.949px */
+  }
+  .cta-form__panel-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .cta-form__form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em; /* 24px */
+    width: 24.0625em; /* 385px */
+    padding-top: 4.04em; /* 64.68px */
+    padding-left: 5.75em; /* 92px */
+  }
+  .cta-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em; /* ~4px */
+  }
+  .cta-form__field label {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1em; /* 16px */
+    color: var(--color-cream);
+  }
+  .cta-form__field input {
+    height: 3em; /* 48px */
+    padding-inline: 1em; /* 16px */
+    background-color: var(--color-surface);
+    border: 0.5px solid var(--color-cream);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 0.875em; /* 14px */
+  }
+  .cta-form__field input::placeholder {
+    color: var(--color-cream);
+    opacity: 0.7;
+  }
+  .cta-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75em; /* 12px */
+    margin-top: 1em; /* part of the 40px field-group gap */
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1em; /* 16px */
+    line-height: 1.3;
+    color: var(--color-cream);
+    cursor: pointer;
+  }
+  .cta-form__consent input {
+    width: 0.875em; /* 14px */
+    height: 0.875em;
+    margin-top: 0.25em;
+    flex-shrink: 0;
+    accent-color: var(--color-gold);
+  }
+  .cta-form__submit {
+    width: 100%;
+    margin-top: 1em;
+  }
+
+  @media (max-width: 991px) {
+    .cta-form__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 3em;
+    }
+    .cta-form__text {
+      width: 100%;
+    }
+    .cta-form__panel {
+      width: 100%;
+      max-width: 35.625em;
+      margin-inline: auto;
+    }
+    .cta-form__form {
+      width: 100%;
+      max-width: 24.0625em;
+      padding-left: 4em;
+      padding-right: 2em;
+    }
+  }
+  @media (max-width: 767px) {
+    .cta-form__heading {
+      font-size: 2.25em;
+    }
+    .cta-form__info {
+      flex-wrap: wrap;
+    }
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+const items = [
+  { num: "06", label: "дни" },
+  { num: "04", label: "часа" },
+  { num: "43", label: "минути" },
+  { num: "12", label: "секунди" },
+];
+---
+
+<div class="countdown">
+  {
+    items.map((c) => (
+      <div class="countdown__item">
+        <div class="countdown__num">{c.num}</div>
+        <span class="countdown__label">{c.label}</span>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .countdown {
+    display: flex;
+    gap: 0.6875em; /* 11px */
+    align-items: center;
+    width: fit-content;
+    padding: 1em 1em 0.75em; /* 16 / 16 / 12 */
+    background-color: var(--color-dark);
+    border: 1px solid var(--color-gold);
+  }
+  .countdown__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6875em; /* 11px */
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .countdown__num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.354em; /* 65px relative to this element's 48px font-size */
+    padding-inline: 0.125em; /* 6px @48 */
+    background-color: var(--color-surface);
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3em; /* 48px */
+    line-height: 1.2;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .countdown__label {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 0.875em; /* 14px */
+    line-height: 1.1;
+    color: var(--color-gray-40);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  @media (max-width: 479px) {
+    .countdown {
+      padding: 0.75em;
+    }
+    .countdown__num {
+      font-size: 2.25em;
+    }
+  }
+</style>

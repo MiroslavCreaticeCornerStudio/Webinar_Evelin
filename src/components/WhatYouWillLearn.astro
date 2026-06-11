@@ -1,0 +1,164 @@
+---
+const items = [
+  {
+    icon: "/assets/images/icon-users.svg",
+    title: "Силният екип не се ражда, а се изгражда",
+    desc: "Ще разбереш как се създава екипен ритъм, в който хората остават фокусирани, отговорни и полезни един за друг, дори когато темпото се вдигне.",
+  },
+  {
+    icon: "/assets/images/icon-chat.svg",
+    title: "Търговски нюх и постоянство",
+    desc: "Ще научиш как да разпознаваш колебание, да задаваш по-точни въпроси и да не оставяш разговора да приключи с неясното „ще помисля“.",
+  },
+  {
+    icon: "/assets/images/icon-list.svg",
+    title: "Стратегия срещу мащаб",
+    desc: "Ще научиш как се подреждат приоритети, когато сроковете са кратки, напрежението расте и всяко решение влияе на екипа, клиента и резултата.",
+  },
+  {
+    icon: "/assets/images/icon-chart.svg",
+    title: "Какво реално вдига стойността на един имот",
+    desc: "Брокерът е лицето на доверието. Ще видиш как подготовката, позиционирането и начинът, по който се води процесът, променят начина, по който клиентът вижда имота и взема решение.",
+  },
+  {
+    icon: "/assets/images/icon-tv.svg",
+    title: "Нещата, които не излъчиха по телевизията",
+    desc: "Ще разбереш кои невидими за клиента действия, разговори и решения правят разликата между хаотична активност и реален напредък.",
+  },
+  {
+    icon: "/assets/images/icon-trend.svg",
+    title: "Как изглежда растежът отвътре",
+    desc: "Ще получиш поглед към решенията, навиците и начина на работа зад компания, която расте бързо в един от най-конкурентните пазари.",
+  },
+];
+---
+
+<section class="learn" id="what-you-will-learn">
+  <div class="container learn__top">
+    <div class="learn__head">
+      <h2 class="learn__heading">
+        На този уебинар <span class="learn__heading-accent">ще научиш</span>
+      </h2>
+      <span class="divider-mark" aria-hidden="true"></span>
+      <p class="learn__intro">
+        В този уебинар няма да ти продаваме курс, програма или „тайна формула“. Ще говорим за
+        реални ситуации, решения и уроци от имотния бизнес.
+      </p>
+    </div>
+
+    <div class="learn__grid">
+      {
+        items.map((item) => (
+          <article class="learn-item">
+            <img src={item.icon} alt="" width="32" height="32" class="learn-item__icon" />
+            <h3 class="learn-item__title">{item.title}</h3>
+            <span class="divider-mark" aria-hidden="true"></span>
+            <p class="learn-item__desc">{item.desc}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <img src="/assets/images/learn-bottom.svg" alt="" class="learn__bottom" aria-hidden="true" />
+</section>
+
+<style>
+  .learn {
+    position: relative;
+    background-color: var(--color-dark);
+    padding-top: 5em; /* 80px */
+    padding-bottom: 9.4375em; /* room for bottom shape (151px) */
+  }
+  .learn__top {
+    display: flex;
+    flex-direction: column;
+    gap: 4em; /* 64px */
+  }
+  .learn__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75em; /* 12px */
+    text-align: center;
+  }
+  .learn__heading {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3em; /* 48px */
+    line-height: 1.2;
+    color: var(--color-cream);
+    text-transform: uppercase;
+  }
+  .learn__heading-accent {
+    color: var(--color-gold);
+  }
+  .learn__intro {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.25em; /* 20px */
+    line-height: 1.3;
+    color: var(--color-cream);
+    max-width: 38em; /* 608px */
+  }
+
+  .learn__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 20.625em); /* 330px */
+    justify-content: space-between;
+    row-gap: 3em; /* 48px */
+  }
+  .learn-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75em; /* 12px */
+    width: 20.625em;
+  }
+  .learn-item__icon {
+    width: 2em; /* 32px */
+    height: 2em;
+  }
+  .learn-item__title {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.25em; /* 20px */
+    line-height: 1.44; /* 28.8/20 */
+    color: var(--color-cream);
+    text-transform: uppercase;
+  }
+  .learn-item__desc {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.125em; /* 18px */
+    line-height: 1.167; /* 21/18 */
+    color: var(--color-gray-20);
+  }
+
+  .learn__bottom {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 9.4375em; /* 151px */
+  }
+
+  @media (max-width: 991px) {
+    .learn__grid {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2.5em;
+      row-gap: 3em;
+    }
+    .learn-item {
+      width: 100%;
+    }
+  }
+  @media (max-width: 767px) {
+    .learn__grid {
+      grid-template-columns: 1fr;
+    }
+    .learn__heading {
+      font-size: 2.25em;
+    }
+  }
+</style>

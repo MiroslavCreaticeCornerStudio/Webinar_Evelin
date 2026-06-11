@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 1440 151" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="rectangular" clip-path="url(#clip0_0_11)">
+<rect width="1440" height="151" fill="#D8DBDE"/>
+<path id="Rectangle background" d="M1440 -330H0V186H1194.5L1440 6V-330Z" fill="var(--fill-0, #21232B)"/>
+</g>
+<defs>
+<clipPath id="clip0_0_11">
+<rect width="1440" height="151" fill="white"/>
+</clipPath>
+</defs>
+</svg>

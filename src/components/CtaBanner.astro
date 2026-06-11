@@ -1,0 +1,115 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+  id?: string;
+  heading: string;
+  buttonText: string;
+  buttonHref?: string;
+  bg: string;
+  watermark?: string;
+}
+
+const {
+  id,
+  heading,
+  buttonText,
+  buttonHref = "#",
+  bg,
+  watermark,
+} = Astro.props;
+---
+
+<section class="cta" id={id}>
+  <div class="cta__bg" aria-hidden="true">
+    <img src={bg} alt="" class="cta__photo" />
+    {watermark && <img src={watermark} alt="" class="cta__watermark" />}
+    <div class="cta__overlay"></div>
+  </div>
+  <div class="container">
+    <div class="cta__box">
+      <div class="cta__content">
+        <h2 class="cta__heading">{heading}</h2>
+        <Button href={buttonHref}>{buttonText}</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    padding-block: 5.25em; /* 84px */
+  }
+  .cta__bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .cta__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cta__watermark {
+    position: absolute;
+    left: 0;
+    top: -16.42%;
+    width: 100%;
+    height: 300.94%;
+    object-fit: cover;
+  }
+  .cta__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(33, 35, 43, 0.9);
+  }
+
+  .cta__box {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 23.75em; /* 380px */
+    padding: 6em 6.1875em; /* 96 / 99 */
+    border: 1px solid var(--color-gold);
+    background-color: rgba(57, 60, 70, 0.2);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .cta__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75em; /* 28px */
+    max-width: 63.125em; /* 1010px */
+    margin: auto 0;
+  }
+  .cta__heading {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3em; /* 48px */
+    line-height: 1.2;
+    color: var(--color-cream);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  @media (max-width: 991px) {
+    .cta__box {
+      padding: 4em 2.5em;
+    }
+  }
+  @media (max-width: 767px) {
+    .cta__heading {
+      font-size: 2.25em;
+    }
+    .cta__box {
+      padding: 3em 1.5em;
+    }
+  }
+</style>

@@ -1,0 +1,155 @@
+---
+import Button from "./Button.astro";
+
+const links = [
+  { label: "За кого е подходящо", href: "#who-is-it-for" },
+  { label: "Какво ще научиш", href: "#what-you-will-learn" },
+  { label: "За лектора", href: "#speaker" },
+];
+---
+
+<header class="navbar">
+  <nav class="container navbar__inner" aria-label="Основна навигация">
+    <a href="#" class="navbar__logo" aria-label="INclusive — начало">
+      <img src="/assets/images/logo-inclusive.svg" alt="INclusive" class="navbar__logo-main" />
+      <img src="/assets/images/logo-subtitle.svg" alt="недвижими имоти" class="navbar__logo-sub" />
+    </a>
+
+    <button
+      class="navbar__toggle"
+      aria-label="Меню"
+      aria-expanded="false"
+      aria-controls="navbar-menu"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="navbar__menu" id="navbar-menu">
+      <ul class="navbar__links">
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <Button href="#cta" variant="outline" class="btn--sm navbar__cta">Запиши се БЕЗПЛАТНО</Button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .navbar {
+    background-color: var(--color-dark);
+    border-bottom: 0.5px solid var(--color-gold);
+  }
+
+  .navbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1em; /* 16px */
+  }
+
+  /* Logo */
+  .navbar__logo {
+    position: relative;
+    display: block;
+    width: 8.6425em; /* 138.28px */
+    height: 3.625em; /* 58px */
+    flex-shrink: 0;
+  }
+  .navbar__logo-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8.6425em;
+    height: 2.5825em; /* 41.32px */
+  }
+  .navbar__logo-sub {
+    position: absolute;
+    top: 3.097em; /* 49.55px */
+    left: 1.042em; /* 16.67px */
+    width: 6.559em; /* 104.94px */
+    height: 0.528em; /* 8.45px */
+  }
+
+  /* Menu cluster */
+  .navbar__menu {
+    display: flex;
+    align-items: center;
+    gap: 2.5em;
+  }
+  .navbar__links {
+    display: flex;
+    gap: 2.5em; /* 40px */
+  }
+  .navbar__links a {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.125em; /* 18px */
+    color: var(--color-cream);
+    white-space: nowrap;
+  }
+
+  /* Hamburger (hidden on desktop) */
+  .navbar__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3125em;
+    width: 2.75em;
+    height: 2.75em;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .navbar__toggle span {
+    display: block;
+    width: 1.75em;
+    height: 2px;
+    background-color: var(--color-cream);
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 991px) {
+    .navbar__toggle {
+      display: flex;
+    }
+    .navbar__menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      z-index: 50;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5em;
+      padding: 1.5em var(--container-padding);
+      background-color: var(--color-dark);
+      border-bottom: 0.5px solid var(--color-gold);
+      display: none;
+    }
+    .navbar__inner {
+      position: relative;
+    }
+    .navbar.is-open .navbar__menu {
+      display: flex;
+    }
+    .navbar__links {
+      flex-direction: column;
+      gap: 1.25em;
+    }
+  }
+</style>
+
+<script>
+  const navbar = document.querySelector<HTMLElement>(".navbar");
+  const toggle = document.querySelector<HTMLButtonElement>(".navbar__toggle");
+  toggle?.addEventListener("click", () => {
+    const open = navbar?.classList.toggle("is-open");
+    toggle.setAttribute("aria-expanded", String(!!open));
+  });
+  // Close menu when a link is tapped (mobile)
+  navbar?.querySelectorAll(".navbar__menu a").forEach((a) =>
+    a.addEventListener("click", () => {
+      navbar.classList.remove("is-open");
+      toggle?.setAttribute("aria-expanded", "false");
+    })
+  );
+</script>

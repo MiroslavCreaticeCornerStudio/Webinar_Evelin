@@ -1,0 +1,173 @@
+---
+const links = [
+  { label: "За кого е подходящо", href: "#who-is-it-for" },
+  { label: "Какво ще научиш", href: "#what-you-will-learn" },
+  { label: "За лектора", href: "#speaker" },
+];
+---
+
+<footer class="footer">
+  <div class="footer__main">
+    <img src="/assets/images/footer-border.svg" alt="" class="footer__border" aria-hidden="true" />
+    <div class="footer__content">
+      <a href="#" class="footer__logo" aria-label="INclusive — недвижими имоти">
+        <img src="/assets/images/logo-inclusive.svg" alt="INclusive" class="footer__logo-main" />
+        <img src="/assets/images/logo-subtitle.svg" alt="недвижими имоти" class="footer__logo-sub" />
+      </a>
+
+      <nav class="footer__links" aria-label="Долна навигация">
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+
+      <div class="footer__address">
+        <span class="footer__addr-item">
+          <img src="/assets/images/icon-footer-pin.svg" alt="" width="15" height="19" />
+          <span>гр. София, бул. Тодор Александров №71 /метростанция „Опълченска“/</span>
+        </span>
+        <a href="tel:070030101" class="footer__addr-item">
+          <img src="/assets/images/icon-phone.svg" alt="" width="17" height="17" />
+          <span>0700 30 101</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bar">
+    <a href="#" class="footer__privacy">Защина на личните данни</a>
+    <p class="footer__copy">„Инклузив България“ АД, 2026 година</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: rgba(57, 60, 70, 0.3);
+  }
+
+  .footer__main {
+    position: relative;
+    padding: 4.5625em 7.5em 3em; /* 73 / 120 */
+  }
+  .footer__border {
+    position: absolute;
+    top: 6.625em; /* 106px */
+    left: 7.5em; /* 120px */
+    right: 7.5em;
+    height: 16.1875em; /* 259px */
+    width: auto;
+  }
+  .footer__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.6875em; /* 43px */
+    max-width: 38.75em; /* 620px */
+    margin-inline: auto;
+  }
+
+  /* Logo */
+  .footer__logo {
+    position: relative;
+    display: block;
+    width: 8.94em; /* 143.048px */
+    height: 2.6715em; /* 42.744px */
+  }
+  .footer__logo-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8.94em;
+    height: 2.6715em;
+  }
+  .footer__logo-sub {
+    position: absolute;
+    top: 3.204em; /* 51.26px */
+    left: 1.0775em; /* 17.24px */
+    width: 6.785em; /* 108.559px */
+    height: 0.546em; /* 8.741px */
+  }
+
+  .footer__links {
+    display: flex;
+    gap: 2.5em; /* 40px */
+  }
+  .footer__links a {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.125em; /* 18px */
+    color: var(--color-cream);
+    white-space: nowrap;
+  }
+
+  .footer__address {
+    display: flex;
+    gap: 1.5em; /* 24px */
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .footer__addr-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75em; /* 12px */
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1em; /* 16px */
+    color: var(--color-cream);
+  }
+  .footer__addr-item img {
+    flex-shrink: 0;
+  }
+
+  /* Gold copyright bar */
+  .footer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 0.75em 7.5em; /* 120px inline */
+    background-color: var(--color-gold);
+  }
+  .footer__privacy,
+  .footer__copy {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.0625em; /* 17px */
+    color: var(--color-dark);
+  }
+  .footer__privacy {
+    text-decoration: underline;
+  }
+  .footer__copy {
+    text-align: right;
+  }
+
+  @media (max-width: 991px) {
+    .footer__main {
+      padding: 4em 1.5em 3em;
+    }
+    .footer__border {
+      left: 1.5em;
+      right: 1.5em;
+    }
+    .footer__bar {
+      padding-inline: 1.5em;
+    }
+  }
+  @media (max-width: 767px) {
+    .footer__links {
+      flex-direction: column;
+      align-items: center;
+      gap: 1em;
+    }
+    .footer__bar {
+      flex-direction: column;
+      gap: 0.5em;
+      text-align: center;
+    }
+    .footer__copy {
+      text-align: center;
+    }
+  }
+</style>

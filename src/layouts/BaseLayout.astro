@@ -1,0 +1,62 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = "INclusive — Безплатно онлайн обучение",
+  description = "Психология на големите резултати. Безплатно онлайн обучение на живо — научете как се изграждат хора, които не могат да бъдат пренебрегнати.",
+  ogImage = "/assets/images/hero-speaker.png",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url).href;
+---
+
+<!doctype html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="bg_BG" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Brand fonts: Le Havre (display) + Futura PT (body) via Adobe Fonts.
+         Montserrat is kept as a Cyrillic-safety fallback. -->
+    <link rel="stylesheet" href="https://use.typekit.net/fas0rfi.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+    />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link sr-only">Към съдържанието</a>
+    <slot />
+  </body>
+</html>

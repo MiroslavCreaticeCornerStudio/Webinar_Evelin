@@ -1,0 +1,14 @@
+---
+interface Props {
+  href?: string;
+  variant?: "solid" | "outline";
+  class?: string;
+}
+
+const { href = "#", variant = "solid", class: className = "" } = Astro.props;
+const classes = ["btn", variant === "outline" && "btn--outline", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<a href={href} class={classes}><slot /></a>

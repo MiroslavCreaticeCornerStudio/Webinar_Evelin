@@ -1,0 +1,172 @@
+---
+const bio = [
+  "С над 6 години опит и стотици реализирани сделки, Евелин познава имотния бизнес от всички страни. Той открива първия офис на Inclusive в Пловдив и изгражда екипа в София от нулата.",
+  "За него тази професия не е просто работа, а призвание, което се доказва в действие.",
+];
+---
+
+<section class="speaker" id="speaker">
+  <div class="container speaker__inner">
+    <div class="speaker__left">
+      <div class="speaker__info">
+        <div class="speaker__headline">
+          <span class="speaker__eyebrow">
+            <img src="/assets/images/icon-eyebrow.svg" alt="" width="8" height="8" />
+            За лектора
+          </span>
+          <h2 class="speaker__name">Евелин Апостолов</h2>
+        </div>
+
+        <span class="divider-mark" aria-hidden="true"></span>
+
+        <p class="speaker__role">
+          <span>Директор Продажби</span>
+          <img src="/assets/images/icon-eyebrow.svg" alt="" width="8" height="8" class="speaker__dot" />
+          <span>INclusive</span>
+        </p>
+
+        <p class="speaker__role speaker__role--bullet">
+          <img src="/assets/images/icon-bullet-tall.svg" alt="" width="8" height="20" class="speaker__marker" />
+          <span>Капитан на победителите в „Борба до ключ“</span>
+        </p>
+      </div>
+
+      <div class="speaker__bio">
+        {bio.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <div class="speaker__image-wrap">
+      <img
+        src="/assets/images/speaker-portrait.png"
+        alt="Евелин Апостолов — Директор Продажби в INclusive"
+        width="475"
+        height="538"
+        class="speaker__image"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .speaker {
+    background-color: var(--color-gray-40); /* #d8dbde */
+    padding-block: 6em; /* 96px */
+  }
+  .speaker__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2em;
+  }
+  .speaker__left {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25em; /* 36px */
+    width: 35.0625em; /* 561px */
+  }
+  .speaker__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1em; /* 16px */
+    align-items: flex-start;
+  }
+  .speaker__headline {
+    display: flex;
+    flex-direction: column;
+    gap: 2em; /* 32px */
+    align-items: flex-start;
+  }
+  .speaker__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em 1em;
+    border: 1px solid var(--color-gold);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1em; /* 16px */
+    line-height: 1.3;
+    color: var(--color-surface); /* #393c46 */
+    text-transform: uppercase;
+  }
+  .speaker__eyebrow img {
+    width: 0.5em;
+    height: 0.5em;
+  }
+  .speaker__name {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3em; /* 48px */
+    line-height: 1.2;
+    color: var(--color-dark);
+    text-transform: uppercase;
+  }
+  .speaker__role {
+    display: flex;
+    align-items: center;
+    gap: 0.5em; /* 8px */
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 1.5em; /* 24px */
+    line-height: 1.2;
+    color: var(--color-dark);
+    text-transform: uppercase;
+  }
+  .speaker__role--bullet {
+    align-items: flex-start;
+  }
+  .speaker__dot {
+    width: 0.333em; /* 8px @24 */
+    height: 0.333em;
+  }
+  .speaker__marker {
+    width: 0.333em; /* 8px @24 */
+    height: 0.833em; /* 20px @24 */
+    margin-top: 0.1em;
+    flex-shrink: 0;
+  }
+  .speaker__bio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em; /* 12px */
+  }
+  .speaker__bio p {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.25em; /* 20px */
+    line-height: 1.3;
+    color: var(--color-surface);
+  }
+
+  .speaker__image-wrap {
+    flex-shrink: 0;
+    width: 36em; /* 576px */
+    display: flex;
+    justify-content: flex-start;
+  }
+  .speaker__image {
+    width: 29.66em; /* 474.587px */
+    height: auto;
+  }
+
+  @media (max-width: 991px) {
+    .speaker__inner {
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 3em;
+    }
+    .speaker__left {
+      width: 100%;
+    }
+    .speaker__image-wrap {
+      width: 100%;
+      justify-content: center;
+    }
+    .speaker__image {
+      width: 29.66em;
+      max-width: 100%;
+    }
+  }
+</style>
