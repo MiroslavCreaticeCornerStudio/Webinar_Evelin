@@ -323,10 +323,12 @@ const infoCol2 = [
         const out = await res.json().catch(() => ({}));
         if (res.ok && out.ok) {
           form.reset();
-          setStatus("Благодарим! Запазихме мястото ти за обучението.", "success");
-        } else {
-          setStatus(out.error || "Възникна грешка. Опитайте отново.", "error");
+          setStatus("Пренасочване…", "success");
+          // Success → go to the dedicated confirmation page.
+          window.location.assign("/thank-you");
+          return;
         }
+        setStatus(out.error || "Възникна грешка. Опитайте отново.", "error");
       } catch {
         setStatus("Възникна грешка с връзката. Опитайте отново.", "error");
       } finally {

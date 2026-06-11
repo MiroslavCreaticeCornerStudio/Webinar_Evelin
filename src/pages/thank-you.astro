@@ -1,0 +1,157 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import { webinar } from "../data/webinar";
+
+const details = [
+  { icon: "/assets/images/icon-calendar.svg", value: webinar.date },
+  { icon: "/assets/images/icon-clock.svg", value: webinar.time },
+  { icon: "/assets/images/icon-mappin.svg", value: "Онлайн в Zoom" },
+];
+---
+
+<BaseLayout
+  title="Благодарим — INclusive"
+  description="Регистрацията ти за безплатния онлайн уебинар е успешна."
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex" />
+  </Fragment>
+
+  <main class="ty">
+    <div class="container ty__inner">
+      <a href="/" class="ty__logo" aria-label="INclusive — начало">
+        <img src="/assets/images/logo-inclusive.svg" alt="INclusive" class="ty__logo-main" />
+        <img src="/assets/images/logo-subtitle.svg" alt="недвижими имоти" class="ty__logo-sub" />
+      </a>
+
+      <span class="ty__check" aria-hidden="true">
+        <img src="/assets/images/icon-check.svg" alt="" width="34" height="37" />
+      </span>
+
+      <h1 class="ty__title">Благодарим ти!</h1>
+
+      <p class="ty__lead">
+        Мястото ти за безплатния онлайн уебинар е запазено. Скоро ще се свържем с теб
+        с всички детайли за участие.
+      </p>
+
+      <ul class="ty__details">
+        {
+          details.map((d) => (
+            <li class="ty__detail">
+              <img src={d.icon} alt="" width="22" height="22" />
+              <span>{d.value}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <Button href="/">Обратно към началото</Button>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .ty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--color-dark);
+    padding-block: 5em;
+  }
+  .ty__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5em;
+    max-width: 38em;
+  }
+
+  /* Logo */
+  .ty__logo {
+    position: relative;
+    display: block;
+    width: 11em; /* 176px */
+    height: 4.6em;
+    margin-bottom: 0.5em;
+  }
+  .ty__logo-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 11em;
+    height: 3.286em;
+  }
+  .ty__logo-sub {
+    position: absolute;
+    top: 3.94em;
+    left: 1.33em;
+    width: 8.35em;
+    height: 0.672em;
+  }
+
+  .ty__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5em;
+    height: 4.5em;
+    border: 1px solid var(--color-gold);
+    border-radius: 50%;
+  }
+  .ty__check img {
+    width: 2.125em; /* 34px */
+    height: auto;
+  }
+
+  .ty__title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 3em; /* 48px */
+    line-height: 1.2;
+    color: var(--color-gold);
+    text-transform: uppercase;
+  }
+  .ty__lead {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.25em; /* 20px */
+    line-height: 1.4;
+    color: var(--color-cream);
+  }
+
+  .ty__details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em 2em;
+    margin-block: 0.5em 1em;
+  }
+  .ty__detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1.125em; /* 18px */
+    color: var(--color-cream);
+  }
+  .ty__detail img {
+    width: 1.375em;
+    height: 1.375em;
+  }
+
+  @media (max-width: 767px) {
+    .ty__title {
+      font-size: 2.25em;
+    }
+    .ty__details {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75em;
+    }
+  }
+</style>
