@@ -177,9 +177,9 @@ const infoCol2 = [
     display: flex;
     flex-direction: column;
     gap: 1.5em; /* 24px */
-    width: 24.0625em; /* 385px */
-    padding-top: 4.04em; /* 64.68px */
-    padding-left: 5.75em; /* 92px */
+    width: 100%;
+    /* Full width with symmetric padding; extra top clears the panel's angled corner. */
+    padding: 4em 3em 3.5em;
   }
   .cta-form__field {
     display: flex;
@@ -266,10 +266,7 @@ const infoCol2 = [
       margin-inline: auto;
     }
     .cta-form__form {
-      width: 100%;
-      max-width: 24.0625em;
-      padding-left: 4em;
-      padding-right: 2em;
+      padding: 3.5em 2em 2.5em;
     }
   }
   @media (max-width: 767px) {
