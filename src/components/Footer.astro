@@ -50,10 +50,16 @@ const links = [
   .footer__border {
     position: absolute;
     top: 6.625em; /* 106px */
-    left: 7.5em; /* 120px */
-    right: 7.5em;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Full container content width (img needs an explicit width — left/right + auto
+       is ignored on replaced elements and collapses to intrinsic size). */
+    width: min(
+      calc(100% - 2 * var(--container-padding)),
+      calc(var(--size-container) - 2 * var(--container-padding))
+    );
     height: 16.1875em; /* 259px */
-    width: auto;
+    z-index: 0;
   }
   .footer__content {
     position: relative;
@@ -147,15 +153,15 @@ const links = [
     .footer__main {
       padding: 4em 1.5em 3em;
     }
-    .footer__border {
-      left: 1.5em;
-      right: 1.5em;
-    }
     .footer__bar {
       padding-inline: 1.5em;
     }
   }
   @media (max-width: 767px) {
+    /* Content stacks taller than the fixed-height frame here — drop the frame. */
+    .footer__border {
+      display: none;
+    }
     .footer__links {
       flex-direction: column;
       align-items: center;
