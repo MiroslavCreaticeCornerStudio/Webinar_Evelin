@@ -79,6 +79,14 @@ const units = [
     text-align: center;
   }
 
+  @media (max-width: 767px) {
+    /* Full width on mobile with the chips spread evenly across the bar */
+    .countdown {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
   @media (max-width: 479px) {
     .countdown {
       padding: 0.75em;
