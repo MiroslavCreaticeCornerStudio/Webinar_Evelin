@@ -1,0 +1,14 @@
+{
+  // Base Cloudflare config — the @astrojs/cloudflare adapter merges this into the
+  // generated dist/server/wrangler.json at build time.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "webinarevelin",
+  "compatibility_date": "2026-04-15",
+  // Required so the SSR Worker can use Node.js built-ins (Astro runtime).
+  "compatibility_flags": ["nodejs_compat"],
+  // Bind the EXISTING KV namespace by id so Cloudflare does NOT try to
+  // auto-create one (which was failing: the namespace already existed).
+  "kv_namespaces": [
+    { "binding": "SESSION", "id": "eb7beaa6c97e4e3f9c0c39e682ab77fd" }
+  ]
+}
