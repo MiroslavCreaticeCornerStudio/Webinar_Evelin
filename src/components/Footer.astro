@@ -68,7 +68,9 @@ const links = [
     flex-direction: column;
     align-items: center;
     gap: 2.6875em; /* 43px */
-    max-width: 38.75em; /* 620px */
+    /* wide enough for the address + phone to sit on one line (≈767px);
+       still wraps gracefully on narrow screens via flex-wrap on the row */
+    max-width: 49em;
     margin-inline: auto;
   }
 
