@@ -239,9 +239,9 @@ p {
   color: var(--color-cream);
 }
 
-/* Button — small (16px) */
+/* Button — small (18px) */
 .btn--sm {
-  font-size: 1em; /* 16px */
+  font-size: 1.125em; /* 18px */
 }
 
 /* Buttons must never overflow narrow screens */
