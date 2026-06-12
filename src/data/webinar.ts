@@ -9,7 +9,7 @@
 // `date` / `time` are the display strings (DD.MM.YYYY / HH:MM).
 // ─────────────────────────────────────────────────────────────────────────
 export const webinar = {
-  startISO: "2026-08-05T19:00:00+03:00",
-  date: "05.08.2026",
+  startISO: "2026-07-02T19:00:00+03:00",
+  date: "02.07.2026",
   time: "19:00",
 } as const;
