@@ -16,7 +16,7 @@ const bullets = [
     <div class="who__image-wrap">
       <img
         src="/assets/images/who-team.webp"
-        alt="Екипът на INclusive пред офиса на компанията"
+        alt="Екипът на INclusive на работна среща"
         width="611"
         height="666"
         class="who__image"
@@ -60,8 +60,9 @@ const bullets = [
   .who__image {
     width: 100%;
     height: auto;
-    object-fit: contain;
-    transform: rotate(180deg); /* Figma applies rotate-180 to this node; raw export is inverted */
+    display: block;
+    /* Angular (chamfered) top-left corner — brand motif */
+    clip-path: polygon(3em 0, 100% 0, 100% 100%, 0 100%, 0 3em);
   }
   .who__content {
     display: flex;
