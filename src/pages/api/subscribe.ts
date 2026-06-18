@@ -1,8 +1,7 @@
-// On-demand endpoint (runs on Cloudflare) — NOT prerendered.
+// On-demand endpoint (runs as a Vercel serverless function) — NOT prerendered.
 export const prerender = false;
 
 import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
 
 const BREVO_CONTACTS_ENDPOINT = "https://api.brevo.com/v3/contacts";
 
@@ -25,11 +24,11 @@ function normalizePhone(raw: string): string | null {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  // Secrets come from Cloudflare env vars (via `cloudflare:workers`). The
+  // Secrets come from Vercel environment variables (process.env at runtime). The
   // import.meta.env fallback is only for local convenience. Key is NEVER in code.
   const apiKey: string | undefined =
-    (env as any).BREVO_API_KEY ?? import.meta.env.BREVO_API_KEY;
-  const listId = Number((env as any).BREVO_LIST_ID ?? import.meta.env.BREVO_LIST_ID ?? 4);
+    process.env.BREVO_API_KEY ?? import.meta.env.BREVO_API_KEY;
+  const listId = Number(process.env.BREVO_LIST_ID ?? import.meta.env.BREVO_LIST_ID ?? 4);
 
   if (!apiKey) {
     return json(
@@ -143,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
 // After the Brevo upsert succeeds, register the attendee to the Zoom webinar and
 // return their unique join link. Create a Zoom Server-to-Server OAuth app and add
 // ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET, ZOOM_WEBINAR_ID as
-// Cloudflare env vars, then:
+// Vercel env vars, then:
 //   1) POST https://zoom.us/oauth/token?grant_type=account_credentials&account_id=$ZOOM_ACCOUNT_ID
 //      Authorization: Basic base64(client_id:client_secret)  → { access_token }
 //   2) POST https://api.zoom.us/v2/webinars/$ZOOM_WEBINAR_ID/registrants
