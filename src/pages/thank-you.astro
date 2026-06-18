@@ -32,8 +32,8 @@ const details = [
       <h1 class="ty__title">Благодарим ти!</h1>
 
       <p class="ty__lead">
-        Мястото ти за безплатния онлайн уебинар е запазено. Скоро ще се свържем с теб
-        с всички детайли за участие.
+        Мястото ти за безплатния онлайн уебинар е запазено. Изпратихме потвърждение и
+        линк за достъп на посочения имейл — провери и папка „Спам“, ако не го откриеш.
       </p>
 
       <ul class="ty__details">
@@ -47,10 +47,28 @@ const details = [
         }
       </ul>
 
+      <a class="btn ty__join" id="zoom-join" href="#" target="_blank" rel="noopener" hidden>
+        Влез в уебинара
+      </a>
       <Button href="/">Обратно към началото</Button>
     </div>
   </main>
 </BaseLayout>
+
+<script>
+  // Reveal the Zoom join button using the unique link the form stored on success.
+  let url = "";
+  try {
+    url = sessionStorage.getItem("inclusive_join_url") || "";
+  } catch {}
+  if (url.startsWith("https://")) {
+    const btn = document.getElementById("zoom-join") as HTMLAnchorElement | null;
+    if (btn) {
+      btn.href = url;
+      btn.hidden = false;
+    }
+  }
+</script>
 
 <style>
   .ty {

@@ -2,6 +2,9 @@
 export const prerender = false;
 
 import type { APIRoute } from "astro";
+// Adapter-agnostic runtime secrets (reads `.env` in dev, Vercel env vars in prod).
+import { getSecret } from "astro:env/server";
+import { registerForWebinar } from "../../lib/zoom";
 
 const BREVO_CONTACTS_ENDPOINT = "https://api.brevo.com/v3/contacts";
 
@@ -24,11 +27,9 @@ function normalizePhone(raw: string): string | null {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  // Secrets come from Vercel environment variables (process.env at runtime). The
-  // import.meta.env fallback is only for local convenience. Key is NEVER in code.
-  const apiKey: string | undefined =
-    process.env.BREVO_API_KEY ?? import.meta.env.BREVO_API_KEY;
-  const listId = Number(process.env.BREVO_LIST_ID ?? import.meta.env.BREVO_LIST_ID ?? 4);
+  // Secrets via Astro's adapter-agnostic getSecret (.env in dev, Vercel env in prod).
+  const apiKey = getSecret("BREVO_API_KEY")?.trim();
+  const listId = Number(getSecret("BREVO_LIST_ID") ?? 4);
 
   if (!apiKey) {
     return json(
@@ -89,6 +90,17 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
+  // Register the attendee in the Zoom webinar (best-effort — a Zoom failure must
+  // NEVER block the Brevo lead capture). The unique join link is stored on the
+  // Brevo contact (WEBINARURL) and returned so the thank-you page can show it.
+  const nameParts = name.split(/\s+/).filter(Boolean);
+  const zoom = await registerForWebinar({
+    email,
+    firstName: nameParts[0] ?? name,
+    lastName: nameParts.slice(1).join(" "),
+  });
+  const joinUrl = zoom?.joinUrl ?? "";
+
   const createContact = (attributes: Record<string, string>) =>
     fetch(BREVO_CONTACTS_ENDPOINT, {
       method: "POST",
@@ -111,7 +123,12 @@ export const POST: APIRoute = async ({ request }) => {
     // Richest payload first; fall back so a missing Brevo attribute or an invalid
     // phone format never causes us to lose the lead.
     const attempts = [
-      { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...trackingAttributes },
+      {
+        ...nameAttr,
+        ...(sms ? { SMS: sms } : {}),
+        ...(joinUrl ? { WEBINARURL: joinUrl } : {}),
+        ...trackingAttributes,
+      },
       { ...nameAttr, ...(sms ? { SMS: sms } : {}) },
       { ...nameAttr },
     ];
@@ -119,8 +136,7 @@ export const POST: APIRoute = async ({ request }) => {
     for (const attrs of attempts) {
       res = await createContact(attrs);
       if (ok(res)) {
-        // ── FUTURE: Zoom webinar registration goes here (see note at bottom) ──
-        return json({ ok: true });
+        return json({ ok: true, joinUrl });
       }
     }
     console.error("Brevo error", res?.status, res ? await res.text() : "no response");
@@ -138,14 +154,9 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 // ───────────────────────────────────────────────────────────────────────────
-// FUTURE — Zoom Webinar registration
-// After the Brevo upsert succeeds, register the attendee to the Zoom webinar and
-// return their unique join link. Create a Zoom Server-to-Server OAuth app and add
-// ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET, ZOOM_WEBINAR_ID as
-// Vercel env vars, then:
-//   1) POST https://zoom.us/oauth/token?grant_type=account_credentials&account_id=$ZOOM_ACCOUNT_ID
-//      Authorization: Basic base64(client_id:client_secret)  → { access_token }
-//   2) POST https://api.zoom.us/v2/webinars/$ZOOM_WEBINAR_ID/registrants
-//      Authorization: Bearer access_token  body: { email, first_name }  → { join_url }
-//   3) return { ok:true, joinUrl } and/or email it via a Brevo transactional template.
+// Zoom webinar registration lives in src/lib/zoom.ts (registerForWebinar).
+// Required env vars (Vercel → Settings → Environment Variables, or local .env):
+//   ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET  — Server-to-Server OAuth app
+//   ZOOM_WEBINAR_ID                                       — the scheduled webinar
+// If any are missing, Zoom is skipped and the form still works via Brevo.
 // ───────────────────────────────────────────────────────────────────────────

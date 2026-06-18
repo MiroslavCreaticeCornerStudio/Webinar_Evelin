@@ -331,6 +331,10 @@ const infoCol2 = [
         if (res.ok && out.ok) {
           form.reset();
           setStatus("Пренасочване…", "success");
+          // Stash the unique Zoom join link so the thank-you page can reveal it.
+          try {
+            if (out.joinUrl) sessionStorage.setItem("inclusive_join_url", out.joinUrl);
+          } catch {}
           // Success → go to the dedicated confirmation page.
           window.location.assign("/thank-you");
           return;
