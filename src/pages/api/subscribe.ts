@@ -145,24 +145,39 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   const ok = (res: Response) => res.ok || res.status === 201 || res.status === 204;
+  const wantsDiag = new URL(request.url).searchParams.get("diag") === "1";
 
   try {
-    // Richest payload first; fall back so a missing Brevo attribute or an invalid
-    // phone format never costs us the lead OR the Zoom join link.
+    // Phone → TELEFON (text, like the home2u project) with SMS as a backup, so
+    // whichever attribute exists in this Brevo account captures the number.
+    // Richest payload first; fall back so a missing attribute never costs us the
+    // lead OR the Zoom join link.
     const webinarAttr = joinUrl ? { WEBINARURL: joinUrl } : {};
+    const telAttr = phone ? { TELEFON: phone } : {};
+    const smsAttr = sms ? { SMS: sms } : {};
     const attempts = [
-      { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...webinarAttr, ...trackingAttributes },
-      // Keep the join link even if a tracking attribute (FBCLID/UTM_*) doesn't exist.
-      { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...webinarAttr },
-      // …or even if SMS (invalid phone) is the problem — still keep the join link.
+      { ...nameAttr, ...telAttr, ...smsAttr, ...webinarAttr, ...trackingAttributes },
+      // home2u-style: phone in TELEFON + the join link (drops tracking if it errors)
+      { ...nameAttr, ...telAttr, ...webinarAttr },
+      // …or SMS + the join link, if TELEFON doesn't exist in this account
+      { ...nameAttr, ...smsAttr, ...webinarAttr },
+      // …keep the join link regardless of the phone field
       { ...nameAttr, ...webinarAttr },
-      { ...nameAttr, ...(sms ? { SMS: sms } : {}) },
+      { ...nameAttr, ...telAttr },
       { ...nameAttr },
     ];
     let res: Response | null = null;
     for (const attrs of attempts) {
       res = await createContact(attrs);
       if (ok(res)) {
+        if (wantsDiag) {
+          const got = await fetch(
+            `https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`,
+            { headers: { "api-key": apiKey, accept: "application/json" } },
+          );
+          const contact: any = await got.json().catch(() => ({}));
+          return json({ ok: true, joinUrl, sentAttrs: Object.keys(attrs), storedAttributes: contact?.attributes ?? contact });
+        }
         return json({ ok: true, joinUrl });
       }
     }
