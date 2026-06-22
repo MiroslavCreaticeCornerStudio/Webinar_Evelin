@@ -145,6 +145,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   const ok = (res: Response) => res.ok || res.status === 201 || res.status === 204;
+  // TEMP diagnostic: ?diag=1 returns Brevo's per-attempt status/error (no secrets).
+  const wantsDiag = new URL(request.url).searchParams.get("diag") === "1";
 
   try {
     // Richest payload first; fall back so a missing Brevo attribute or an invalid
@@ -152,22 +154,29 @@ export const POST: APIRoute = async ({ request }) => {
     const webinarAttr = joinUrl ? { WEBINARURL: joinUrl } : {};
     const attempts = [
       { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...webinarAttr, ...trackingAttributes },
-      // Keep the join link even if a tracking attribute (FBCLID/UTM_*) doesn't
-      // exist in Brevo — only the tracking attrs get dropped here, not WEBINARURL.
+      // Keep the join link even if a tracking attribute (FBCLID/UTM_*) doesn't exist.
       { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...webinarAttr },
+      // …or even if SMS (invalid phone) is the problem — keep the join link.
+      { ...nameAttr, ...webinarAttr },
       { ...nameAttr, ...(sms ? { SMS: sms } : {}) },
       { ...nameAttr },
     ];
+    const diag: Array<Record<string, unknown>> = [];
     let res: Response | null = null;
     for (const attrs of attempts) {
       res = await createContact(attrs);
-      if (ok(res)) {
-        return json({ ok: true, joinUrl });
+      const okRes = ok(res);
+      if (wantsDiag) {
+        const errText = okRes ? "" : await res.clone().text().catch(() => "");
+        diag.push({ attrs: Object.keys(attrs), status: res.status, ok: okRes, error: errText.slice(0, 300) });
+      }
+      if (okRes) {
+        return json({ ok: true, joinUrl, ...(wantsDiag ? { diag } : {}) });
       }
     }
     console.error("Brevo error", res?.status, res ? await res.text() : "no response");
     return json(
-      { ok: false, error: "Възникна грешка при записването. Опитайте отново." },
+      { ok: false, error: "Възникна грешка при записването. Опитайте отново.", ...(wantsDiag ? { diag } : {}) },
       502
     );
   } catch (e) {
