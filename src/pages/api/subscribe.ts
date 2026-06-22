@@ -145,6 +145,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   const ok = (res: Response) => res.ok || res.status === 201 || res.status === 204;
+  // TEMP: ?diag=1 reads the contact back from Brevo to show what's actually stored.
+  const wantsDiag = new URL(request.url).searchParams.get("diag") === "1";
 
   try {
     // Richest payload first; fall back so a missing Brevo attribute or an invalid
@@ -163,6 +165,20 @@ export const POST: APIRoute = async ({ request }) => {
     for (const attrs of attempts) {
       res = await createContact(attrs);
       if (ok(res)) {
+        if (wantsDiag) {
+          const got = await fetch(
+            `https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`,
+            { headers: { "api-key": apiKey, accept: "application/json" } },
+          );
+          const contact: any = await got.json().catch(() => ({}));
+          return json({
+            ok: true,
+            joinUrl,
+            sentAttrs: Object.keys(attrs),
+            sentWebinarUrl: (attrs as any).WEBINARURL ?? null,
+            storedAttributes: contact?.attributes ?? contact,
+          });
+        }
         return json({ ok: true, joinUrl });
       }
     }
