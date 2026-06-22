@@ -149,13 +149,12 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     // Richest payload first; fall back so a missing Brevo attribute or an invalid
     // phone format never causes us to lose the lead.
+    const webinarAttr = joinUrl ? { WEBINARURL: joinUrl } : {};
     const attempts = [
-      {
-        ...nameAttr,
-        ...(sms ? { SMS: sms } : {}),
-        ...(joinUrl ? { WEBINARURL: joinUrl } : {}),
-        ...trackingAttributes,
-      },
+      { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...webinarAttr, ...trackingAttributes },
+      // Keep the join link even if a tracking attribute (FBCLID/UTM_*) doesn't
+      // exist in Brevo — only the tracking attrs get dropped here, not WEBINARURL.
+      { ...nameAttr, ...(sms ? { SMS: sms } : {}), ...webinarAttr },
       { ...nameAttr, ...(sms ? { SMS: sms } : {}) },
       { ...nameAttr },
     ];
