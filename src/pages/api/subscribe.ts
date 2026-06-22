@@ -108,6 +108,7 @@ export const POST: APIRoute = async ({ request }) => {
     email,
     phone,
     consent,
+    form: "Уебинар – Психология на големите резултати",
     source: "webinar.inclusive.bg",
     submitted_at: new Date().toISOString(),
   };
