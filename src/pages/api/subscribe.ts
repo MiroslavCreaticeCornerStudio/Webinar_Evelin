@@ -5,6 +5,7 @@ import type { APIRoute } from "astro";
 // Adapter-agnostic runtime secrets (reads `.env` in dev, Vercel env vars in prod).
 import { getSecret } from "astro:env/server";
 import { registerForWebinar } from "../../lib/zoom";
+import { sendToCrm } from "../../lib/crm";
 
 const BREVO_CONTACTS_ENDPOINT = "https://api.brevo.com/v3/contacts";
 
@@ -100,6 +101,31 @@ export const POST: APIRoute = async ({ request }) => {
     lastName: nameParts.slice(1).join(" "),
   });
   const joinUrl = zoom?.joinUrl ?? "";
+
+  // Forward the full lead to the custom CRM (skyguru) — best-effort, never blocks.
+  const crmPayload: Record<string, unknown> = {
+    name,
+    email,
+    phone,
+    consent,
+    source: "webinar.inclusive.bg",
+    submitted_at: new Date().toISOString(),
+  };
+  if (joinUrl) crmPayload.join_url = joinUrl;
+  for (const key of [
+    "fbclid",
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+    "fb_click_time",
+    "landing_url",
+  ]) {
+    const v = (body as Record<string, unknown>)[key];
+    if (v !== undefined && v !== null && String(v).trim() !== "") crmPayload[key] = String(v);
+  }
+  await sendToCrm(crmPayload);
 
   const createContact = (attributes: Record<string, string>) =>
     fetch(BREVO_CONTACTS_ENDPOINT, {
