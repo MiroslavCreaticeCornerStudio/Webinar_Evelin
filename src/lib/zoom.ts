@@ -6,6 +6,8 @@ import { getSecret } from "astro:env/server";
 export interface ZoomRegistration {
   joinUrl: string;
   registrantId: string;
+  error?: string; // diagnostic only — Zoom error body when registration failed
+  status?: number; // diagnostic only — Zoom HTTP status
 }
 
 async function getAccessToken(): Promise<string | null> {
@@ -57,8 +59,9 @@ export async function registerForWebinar(
     );
 
     if (!res.ok) {
-      console.error("Zoom register failed", res.status, await res.text().catch(() => ""));
-      return null;
+      const body = await res.text().catch(() => "");
+      console.error("Zoom register failed", res.status, body);
+      return { joinUrl: "", registrantId: "", error: body.slice(0, 400), status: res.status };
     }
 
     const data = (await res.json()) as { join_url?: string; registrant_id?: string };

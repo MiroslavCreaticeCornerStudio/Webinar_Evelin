@@ -145,6 +145,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   const ok = (res: Response) => res.ok || res.status === 201 || res.status === 204;
+  const wantsDiag = new URL(request.url).searchParams.get("diag") === "1";
 
   try {
     // Phone → TELEFON (text, like the home2u project) with SMS as a backup, so
@@ -169,7 +170,11 @@ export const POST: APIRoute = async ({ request }) => {
     for (const attrs of attempts) {
       res = await createContact(attrs);
       if (ok(res)) {
-        return json({ ok: true, joinUrl });
+        return json({
+          ok: true,
+          joinUrl,
+          ...(wantsDiag ? { zoomStatus: zoom?.status, zoomError: zoom?.error } : {}),
+        });
       }
     }
     console.error("Brevo error", res?.status, res ? await res.text() : "no response");
