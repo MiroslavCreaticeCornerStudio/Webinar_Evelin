@@ -145,7 +145,6 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   const ok = (res: Response) => res.ok || res.status === 201 || res.status === 204;
-  const wantsDiag = new URL(request.url).searchParams.get("diag") === "1";
 
   try {
     // Phone → TELEFON (text, like the home2u project) with SMS as a backup, so
@@ -170,14 +169,6 @@ export const POST: APIRoute = async ({ request }) => {
     for (const attrs of attempts) {
       res = await createContact(attrs);
       if (ok(res)) {
-        if (wantsDiag) {
-          const got = await fetch(
-            `https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`,
-            { headers: { "api-key": apiKey, accept: "application/json" } },
-          );
-          const contact: any = await got.json().catch(() => ({}));
-          return json({ ok: true, joinUrl, sentAttrs: Object.keys(attrs), storedAttributes: contact?.attributes ?? contact });
-        }
         return json({ ok: true, joinUrl });
       }
     }
