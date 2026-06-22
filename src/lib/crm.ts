@@ -4,7 +4,7 @@
 // SKYGURU_API_KEY (sent only if set). Secrets via astro:env getSecret.
 import { getSecret } from "astro:env/server";
 
-const DEFAULT_CRM_ENDPOINT = "https://inclusive.skyguru.ai/";
+const DEFAULT_CRM_ENDPOINT = "https://inclusive.skyguru.ai/api/v1/public/leads";
 
 export async function sendToCrm(lead: Record<string, unknown>): Promise<boolean> {
   const endpoint = getSecret("CRM_ENDPOINT")?.trim() || DEFAULT_CRM_ENDPOINT;
