@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/careers", "destination": "https://inclusive-after-webinar.vercel.app/" },
+    { "source": "/careers/:path*", "destination": "https://inclusive-after-webinar.vercel.app/:path*" }
+  ]
+}
